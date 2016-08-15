@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private List<View> views = new ArrayList<>();
     private MyService.MyBind bind = null;
     private ImageButton id_right_ibtn, id_left_ibtn;
-    private TextView textview;
     private Timer timer;
     private ServiceConnection connection = new ServiceConnection() {
         @Override
@@ -74,9 +73,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        textview = (TextView) findViewById(R.id.textview);
-        textview.setText("Hello World");
 
         initView();
 
