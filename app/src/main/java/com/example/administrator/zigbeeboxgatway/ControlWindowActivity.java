@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.administrator.service.MyService;
+import com.example.administrator.tools.Util;
 
 /**
  * Created by Administrator on 2016/8/9.
@@ -53,7 +54,25 @@ public class ControlWindowActivity extends Activity {
         id_smg_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ControlWindowActivity.this, "你选择了:" + position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ControlWindowActivity.this, "你选择了:" + position, Toast.LENGTH_SHORT).show();
+                byte[] controlCmd = new byte[10];
+                controlCmd[0] = 0x7e;
+                controlCmd[1] = 0x7e;//head
+                controlCmd[2] = 0x22;//addr
+                controlCmd[3] = 0x03;//commend
+                controlCmd[4] = 0x02;//type
+                controlCmd[5] = (byte) Integer.parseInt(id_smg_spinner.getItemAtPosition(position).toString(), 16);
+                controlCmd[6] = 0x00;
+                controlCmd[7] = 0x00;
+                byte[] aa = new byte[6];
+                System.arraycopy(controlCmd, 2, aa, 0, 6);
+                byte[] bb = new byte[2];
+                Util.get_crc16(aa, aa.length, bb);
+                controlCmd[8] = bb[0];
+                controlCmd[9] = bb[1];
+                if (myBind != null) {
+                    myBind.writeDataToSerial(controlCmd);
+                }
             }
 
             @Override
@@ -64,7 +83,7 @@ public class ControlWindowActivity extends Activity {
         id_led_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ControlWindowActivity.this, "你选择了:" + position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ControlWindowActivity.this, "你选择了:" + position, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -77,7 +96,24 @@ public class ControlWindowActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-
+                    byte[] controlCmd = new byte[10];
+                    controlCmd[0] = 0x7e;
+                    controlCmd[1] = 0x7e;//head
+                    controlCmd[2] = 0x22;//addr
+                    controlCmd[3] = 0x03;//commend
+                    controlCmd[4] = 0x0;//type
+                    controlCmd[5] = (byte) 0x00;
+                    controlCmd[6] = 0x00;
+                    controlCmd[7] = 0x00;
+                    byte[] aa = new byte[6];
+                    System.arraycopy(controlCmd, 2, aa, 0, 6);
+                    byte[] bb = new byte[2];
+                    Util.get_crc16(aa, aa.length, bb);
+                    controlCmd[8] = bb[0];
+                    controlCmd[9] = bb[1];
+                    if (myBind != null) {
+                        myBind.writeDataToSerial(controlCmd);
+                    }
                 }
                 Toast.makeText(ControlWindowActivity.this, "正转:" + isChecked, Toast.LENGTH_SHORT).show();
             }
@@ -87,7 +123,24 @@ public class ControlWindowActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-
+                    byte[] controlCmd = new byte[10];
+                    controlCmd[0] = 0x7e;
+                    controlCmd[1] = 0x7e;//head
+                    controlCmd[2] = 0x22;//addr
+                    controlCmd[3] = 0x03;//commend
+                    controlCmd[4] = 0x00;//type
+                    controlCmd[5] = (byte) 0xff;
+                    controlCmd[6] = 0x00;
+                    controlCmd[7] = 0x00;
+                    byte[] aa = new byte[6];
+                    System.arraycopy(controlCmd, 2, aa, 0, 6);
+                    byte[] bb = new byte[2];
+                    Util.get_crc16(aa, aa.length, bb);
+                    controlCmd[8] = bb[0];
+                    controlCmd[9] = bb[1];
+                    if (myBind != null) {
+                        myBind.writeDataToSerial(controlCmd);
+                    }
                 }
                 Toast.makeText(ControlWindowActivity.this, "反转:" + isChecked, Toast.LENGTH_SHORT).show();
             }

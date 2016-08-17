@@ -29,5 +29,6 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
+        android:visibility="invisible"
         android:background="@mipmap/left"/>
 </RelativeLayout>

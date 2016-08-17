@@ -33,10 +33,10 @@ public class TwoFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         activity = (MainActivity) getActivity();
-        activity.setServiceDataListener(new MainActivity.HexDataListener() {
+        activity.setServiceDataListener2(new MainActivity.HexDataListener() {
             @Override
             public void getServiceHexData(byte[] data) {
-                Log.d(tag, "hex = " + new String(data) + ", length = " + data.length);
+                Log.d(tag, "hex = " + ModebusParse.byteToHexString(data) + ", length = " + data.length);
                 if (data.length > 0) {
                     int i = 0;
                     int count = 0;

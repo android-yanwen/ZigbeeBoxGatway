@@ -46,15 +46,18 @@ public class MainActivity extends AppCompatActivity {
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.d(tag, "onServiceConnected");
+//            Log.d(tag, "onServiceConnected");
             bind = (MyService.MyBind) service;
-            if (dataListener != null) {
+            if (dataListener != null && dataListener2 != null) {
                 // 没隔一段时间调用HexServiceLitener接口类的getServiceHexData()接口
                 timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
+                        byte[] b_data = bind.getSerialHexData();
+                        Log.d(tag, ModebusParse.byteToHexString(b_data));
                         dataListener.getServiceHexData(bind.getSerialHexData());
+                        dataListener2.getServiceHexData(bind.getSerialHexData());
                     }
                 }, 0 , 500);
             }
@@ -84,10 +87,14 @@ public class MainActivity extends AppCompatActivity {
     public interface HexDataListener {
         void getServiceHexData(byte[] data);
     }
-    private HexDataListener dataListener;
+    private HexDataListener dataListener, dataListener2;
     // 要获取串口数据必须要监听此接口
     public void setServiceDataListener(HexDataListener hexDataListener){
         dataListener = hexDataListener;
+
+    }
+    public void setServiceDataListener2(HexDataListener hexDataListener){
+        dataListener2 = hexDataListener;
     }
 
 
@@ -112,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(MainActivity.this, "position="+position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "position="+position, Toast.LENGTH_SHORT).show();
                 switch (position) {
                     case 0:
                         if (id_left_ibtn != null && id_right_ibtn != null) {

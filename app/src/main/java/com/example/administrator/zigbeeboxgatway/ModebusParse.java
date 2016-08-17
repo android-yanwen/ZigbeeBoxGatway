@@ -5,15 +5,15 @@ package com.example.administrator.zigbeeboxgatway;
  */
 public class ModebusParse {
     private byte[] modebusData;
-    public static final byte RAIN_DROP_SENSOR_ADDR = 0x11;  //雨滴传感器
-    public static final byte TEMP_HUMI_SENSOR_ADDR = 0x12;  //温湿度传感器
-    public static final byte DIP_SENSOR_ADDR = 0x13; //倾角传感器
-    public static final byte ILLUMINTION_SENSOR_ADDR = 0x14;//光照度传感器
-    public static final byte INFRARED_SENSOR_ADDR = 0x15;   //红外感应传感器
-    public static final byte FIRE_SENSOR_ADDR = 0x16;     //火焰传感器
+    public static final byte RAIN_DROP_SENSOR_ADDR = 0x11;  //雨滴传感器//
+    public static final byte TEMP_HUMI_SENSOR_ADDR = 0x12;  //温湿度传感器//
+    public static final byte DIP_SENSOR_ADDR = 0x13; //倾角传感器//
+    public static final byte ILLUMINTION_SENSOR_ADDR = 0x14;//光照度传感器//
+    public static final byte INFRARED_SENSOR_ADDR = 0x15;   //红外感应传感器//
+    public static final byte FIRE_SENSOR_ADDR = 0x16;     //火焰传感器//
     public static final byte ULTRASONIC_SENSOR_ADDR = 0x17;//超声波传感器
-    public static final byte COMBUSTIBLE_GAS_ADDR = 0x18;  //可燃气体传感器
-    public static final byte DS1820_SENSOR_ADDR = 0x19; //ds18b20温度传感器
+    public static final byte COMBUSTIBLE_GAS_ADDR = 0x18;  //可燃气体传感器//
+    public static final byte DS1820_SENSOR_ADDR = 0x19; //ds18b20温度传感器//
     public static final byte ALCOHOL_SENSOR_ADDR = 0x20; //酒精传感器
     public static final byte SMOKE_SENSOR_ADDR = 0x21; //烟雾传感器
     public static final byte CONTROL_MODULE_ADDR = 0x22; //控制模块
@@ -46,12 +46,16 @@ public class ModebusParse {
                 return "温湿度传感器\n" + s_humi + "\n" + s_temp;
             case DIP_SENSOR_ADDR:
                 if (modebusData[4] == 0x00) {
-                    return "倾角传感器\n水平";
-                } else {
                     return "倾角传感器\n倾斜";
+                } else {
+                    return "倾角传感器\n水平";
                 }
             case ILLUMINTION_SENSOR_ADDR:
-                return "";
+                int i_illumL = modebusData[4] & 0xff;
+                int i_illumH = modebusData[5] & 0xff;
+                int i_illum = (i_illumH << 8 | i_illumL) * 2 / 10;
+                String s_illum = "光照传感器\n" + Integer.toString(i_illum) + "Lux";
+                return s_illum;
             case INFRARED_SENSOR_ADDR:
                 if (modebusData[4] == 0x00) {
                     return "红外传感器\n无人";
@@ -72,20 +76,20 @@ public class ModebusParse {
                 }
             case COMBUSTIBLE_GAS_ADDR:
                 if (modebusData[4] == 0x00) {
-                    return "可燃气体传感器\n无可燃气体";
+                    return "可燃气体\n无气体";
                 } else {
-                    return "超声波传感器\n有可燃气体";
+                    return "可燃气体\n有气体";
                 }
             case DS1820_SENSOR_ADDR:
                 int i_tempH = modebusData[4];
                 int i_tempL = modebusData[5];
                 String s_Temp = Integer.toString(i_tempH) + "." + Integer.toString(i_tempL);
-                return "18B20温度数字温度传感器\n" + s_Temp;
+                return "18B20温度传感器\n" + s_Temp;
             case SMOKE_SENSOR_ADDR:
                 if (modebusData[4] == 0x00) {
-                    return "烟雾传感器\n无烟雾";
-                } else {
                     return "烟雾传感器\n有烟雾";
+                } else {
+                    return "烟雾传感器\n无烟雾";
                 }
             case ALCOHOL_SENSOR_ADDR:
                 if (modebusData[4] == 0x00) {
@@ -95,6 +99,18 @@ public class ModebusParse {
                 }
         }
         return "";
+    }
+
+    static public String byteToHexString(byte[] h_data){
+        String s_data = "";
+        for (int i = 0; i < h_data.length; i++) {
+            String s_byte = Integer.toHexString(h_data[i] & 0x000000ff);
+            if (s_byte.length() < 2) {
+                s_byte = "0" + s_byte;
+            }
+            s_data += s_byte;
+        }
+        return s_data;
     }
 
 }

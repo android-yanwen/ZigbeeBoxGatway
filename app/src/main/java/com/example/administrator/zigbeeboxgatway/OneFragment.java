@@ -57,7 +57,7 @@ public class OneFragment extends Fragment {
         this.activity.setServiceDataListener(new MainActivity.HexDataListener() {
             @Override
             public void getServiceHexData(byte[] data) {
-                Log.d(tag, "hex = " + new String(data) + ", length = " + data.length);
+                Log.d(tag, "hex = " + ModebusParse.byteToHexString(data) + ", length = " + data.length);
                 if (data.length > 0) {
                     int i = 0;
                     int count = 0;

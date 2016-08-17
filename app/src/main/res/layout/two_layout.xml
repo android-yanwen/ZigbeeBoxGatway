@@ -21,6 +21,8 @@
                 android:id="@+id/id_ultrasonic_sensor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="@color/colorAccent"
                 android:text="超声波传感器"/>
         </LinearLayout>
         <LinearLayout
@@ -37,6 +39,8 @@
                 android:id="@+id/id_fire_sensor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="@color/colorAccent"
                 android:text="火焰传感器"/>
         </LinearLayout>
         <LinearLayout
@@ -53,6 +57,8 @@
                 android:id="@+id/id_alcohol_sensor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="@color/colorAccent"
                 android:text="酒精传感器"/>
         </LinearLayout>
         <LinearLayout
@@ -69,6 +75,8 @@
                 android:id="@+id/id_infrared_sensor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="@color/colorAccent"
                 android:text="红外传感器"/>
         </LinearLayout>
         <LinearLayout
@@ -85,6 +93,8 @@
                 android:id="@+id/id_temp_1820_sensor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="@color/colorAccent"
                 android:text="温度18b20传感器"/>
         </LinearLayout>
     </GridLayout>
