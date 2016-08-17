@@ -28,6 +28,7 @@ public class ControlWindowActivity extends Activity {
     private static final String tag = "ControlWindowActivity";
     private MyService.MyBind myBind = null;
     private RadioButton id_forward_rbtn, id_reversal_rbtn;
+    private RadioButton id_open_beep_rbtn, id_close_beep_rbtn;
     private Spinner id_smg_spinner, id_led_spinner;
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -50,6 +51,9 @@ public class ControlWindowActivity extends Activity {
     }
 
     private void initView() {
+        /**
+         * 数码管的控制 Spinner
+         */
         id_smg_spinner = (Spinner) findViewById(R.id.id_smg_spinner);
         id_smg_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -79,6 +83,9 @@ public class ControlWindowActivity extends Activity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        /**
+         * LED点阵的控制 Spinner
+         */
         id_led_spinner = (Spinner) findViewById(R.id.id_led_spinner);
         id_led_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -90,7 +97,9 @@ public class ControlWindowActivity extends Activity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
+        /**
+         * 电机正反转的控制 RadioButton
+         */
         id_forward_rbtn = (RadioButton) findViewById(R.id.id_forward_rbtn);
         id_forward_rbtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -145,7 +154,61 @@ public class ControlWindowActivity extends Activity {
                 Toast.makeText(ControlWindowActivity.this, "反转:" + isChecked, Toast.LENGTH_SHORT).show();
             }
         });
-
+        /**
+         * 蜂鸣器的开关控制 RadioButton
+         */
+        id_open_beep_rbtn = (RadioButton) findViewById(R.id.id_open_beep_rbtn);
+        id_open_beep_rbtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    byte[] controlCmd = new byte[10];
+                    controlCmd[0] = 0x7e;
+                    controlCmd[1] = 0x7e;//head
+                    controlCmd[2] = 0x22;//addr
+                    controlCmd[3] = 0x03;//commend
+                    controlCmd[4] = 0x01;//type
+                    controlCmd[5] = (byte) 0x00;
+                    controlCmd[6] = 0x00;
+                    controlCmd[7] = 0x00;
+                    byte[] aa = new byte[6];
+                    System.arraycopy(controlCmd, 2, aa, 0, 6);
+                    byte[] bb = new byte[2];
+                    Util.get_crc16(aa, aa.length, bb);
+                    controlCmd[8] = bb[0];
+                    controlCmd[9] = bb[1];
+                    if (myBind != null) {
+                        myBind.writeDataToSerial(controlCmd);
+                    }
+                }
+            }
+        });
+        id_close_beep_rbtn = (RadioButton) findViewById(R.id.id_close_beep_rbtn);
+        id_close_beep_rbtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    byte[] controlCmd = new byte[10];
+                    controlCmd[0] = 0x7e;
+                    controlCmd[1] = 0x7e;//head
+                    controlCmd[2] = 0x22;//addr
+                    controlCmd[3] = 0x03;//commend
+                    controlCmd[4] = 0x01;//type
+                    controlCmd[5] = (byte) 0xff;
+                    controlCmd[6] = 0x00;
+                    controlCmd[7] = 0x00;
+                    byte[] aa = new byte[6];
+                    System.arraycopy(controlCmd, 2, aa, 0, 6);
+                    byte[] bb = new byte[2];
+                    Util.get_crc16(aa, aa.length, bb);
+                    controlCmd[8] = bb[0];
+                    controlCmd[9] = bb[1];
+                    if (myBind != null) {
+                        myBind.writeDataToSerial(controlCmd);
+                    }
+                }
+            }
+        });
     }
 
     @Override
