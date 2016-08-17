@@ -212,6 +212,7 @@ public class ControlWindowActivity extends Activity {
         });
         /**
          * 继电器的通断控制 RadioButton
+         *
          */
         id_on_relay_rbtn = (RadioButton) findViewById(R.id.id_on_relay_rbtn);
         id_on_relay_rbtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
