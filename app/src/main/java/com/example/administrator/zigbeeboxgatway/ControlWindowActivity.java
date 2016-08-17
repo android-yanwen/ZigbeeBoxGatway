@@ -29,6 +29,7 @@ public class ControlWindowActivity extends Activity {
     private MyService.MyBind myBind = null;
     private RadioButton id_forward_rbtn, id_reversal_rbtn;
     private RadioButton id_open_beep_rbtn, id_close_beep_rbtn;
+    private RadioButton id_on_relay_rbtn, id_off_relay_rbtn;
     private Spinner id_smg_spinner, id_led_spinner;
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -194,6 +195,61 @@ public class ControlWindowActivity extends Activity {
                     controlCmd[2] = 0x22;//addr
                     controlCmd[3] = 0x03;//commend
                     controlCmd[4] = 0x01;//type
+                    controlCmd[5] = (byte) 0xff;
+                    controlCmd[6] = 0x00;
+                    controlCmd[7] = 0x00;
+                    byte[] aa = new byte[6];
+                    System.arraycopy(controlCmd, 2, aa, 0, 6);
+                    byte[] bb = new byte[2];
+                    Util.get_crc16(aa, aa.length, bb);
+                    controlCmd[8] = bb[0];
+                    controlCmd[9] = bb[1];
+                    if (myBind != null) {
+                        myBind.writeDataToSerial(controlCmd);
+                    }
+                }
+            }
+        });
+        /**
+         * 继电器的通断控制 RadioButton
+         */
+        id_on_relay_rbtn = (RadioButton) findViewById(R.id.id_on_relay_rbtn);
+        id_on_relay_rbtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    byte[] controlCmd = new byte[10];
+                    controlCmd[0] = 0x7e;
+                    controlCmd[1] = 0x7e;//head
+                    controlCmd[2] = 0x22;//addr
+                    controlCmd[3] = 0x03;//commend
+                    controlCmd[4] = 0x03;//type
+                    controlCmd[5] = (byte) 0x00;
+                    controlCmd[6] = 0x00;
+                    controlCmd[7] = 0x00;
+                    byte[] aa = new byte[6];
+                    System.arraycopy(controlCmd, 2, aa, 0, 6);
+                    byte[] bb = new byte[2];
+                    Util.get_crc16(aa, aa.length, bb);
+                    controlCmd[8] = bb[0];
+                    controlCmd[9] = bb[1];
+                    if (myBind != null) {
+                        myBind.writeDataToSerial(controlCmd);
+                    }
+                }
+            }
+        });
+        id_off_relay_rbtn = (RadioButton) findViewById(R.id.id_off_relay_rbtn);
+        id_off_relay_rbtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    byte[] controlCmd = new byte[10];
+                    controlCmd[0] = 0x7e;
+                    controlCmd[1] = 0x7e;//head
+                    controlCmd[2] = 0x22;//addr
+                    controlCmd[3] = 0x03;//commend
+                    controlCmd[4] = 0x03;//type
                     controlCmd[5] = (byte) 0xff;
                     controlCmd[6] = 0x00;
                     controlCmd[7] = 0x00;

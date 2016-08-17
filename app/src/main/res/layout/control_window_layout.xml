@@ -107,5 +107,33 @@
                 android:textSize="15sp"
                 android:text="关闭"/>
         </RadioGroup>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="20sp"
+            android:text="继电器"/>
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/id_on_relay_rbtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="15sp"
+                android:text="On"/>
+            <RadioButton
+                android:id="@+id/id_off_relay_rbtn"
+                android:layout_marginLeft="20dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="15sp"
+                android:text="Off"/>
+        </RadioGroup>
     </LinearLayout>
 </RelativeLayout>
