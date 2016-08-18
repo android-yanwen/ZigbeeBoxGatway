@@ -92,6 +92,24 @@ public class ControlWindowActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                Toast.makeText(ControlWindowActivity.this, "你选择了:" + position, Toast.LENGTH_SHORT).show();
+                byte[] controlCmd = new byte[10];
+                controlCmd[0] = 0x7e;
+                controlCmd[1] = 0x7e;//head
+                controlCmd[2] = 0x22;//addr
+                controlCmd[3] = 0x03;//commend
+                controlCmd[4] = 0x04;//type
+                controlCmd[5] = (byte) Integer.parseInt(id_led_spinner.getItemAtPosition(position).toString(), 16);
+                controlCmd[6] = 0x00;
+                controlCmd[7] = 0x00;
+                byte[] aa = new byte[6];
+                System.arraycopy(controlCmd, 2, aa, 0, 6);
+                byte[] bb = new byte[2];
+                Util.get_crc16(aa, aa.length, bb);
+                controlCmd[8] = bb[0];
+                controlCmd[9] = bb[1];
+                if (myBind != null) {
+                    myBind.writeDataToSerial(controlCmd);
+                }
             }
 
             @Override
