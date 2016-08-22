@@ -214,11 +214,31 @@ public class MainActivity extends AppCompatActivity {
             ((Application) getApplication()).getSerialPort();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InvalidParameterException e) {
+        } catch (InvalidParameterException e) {//当串口等参数未配置时会抛出此异常
             // 如果串口未配置会抛出InvalidParameterException异常
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Error");
             builder.setMessage("请先配置串口");
+            builder.setCancelable(false);
+            builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity(new Intent(MainActivity.this, SerialPortPreferences.class));
+                }
+            });
+            builder.setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            builder.show();
+            return;
+        } catch (SecurityException e) {//当串口不存在时会抛出此异常
+            // 如果串口未配置会抛出InvalidParameterException异常
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Error");
+            builder.setMessage("严重错误，当前串口可能不存在请重新选择！！");
             builder.setCancelable(false);
             builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
                 @Override

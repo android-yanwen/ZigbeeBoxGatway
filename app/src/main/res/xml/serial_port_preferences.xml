@@ -5,14 +5,14 @@
     <ListPreference
         android:key="DEVICE"
         android:persistent="true"
-        android:title="Device" >
+        android:title="端口设备" >
     </ListPreference>
     <ListPreference
         android:entries="@array/baudrates_name"
         android:entryValues="@array/baudrates_value"
         android:key="BAUDRATE"
         android:persistent="true"
-        android:title="Baud rate" >
+        android:title="波特率" >
     </ListPreference>
 
 </PreferenceScreen>

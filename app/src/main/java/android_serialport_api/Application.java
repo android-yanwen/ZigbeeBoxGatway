@@ -28,6 +28,7 @@ public class Application extends android.app.Application {
 
 			/* Open the serial port */
 			mSerialPort = new SerialPort(new File(/*"/dev/" + */path), baudrate/*Integer.decode("115200")*/,0);
+
 		}
 		return mSerialPort;
 	}
